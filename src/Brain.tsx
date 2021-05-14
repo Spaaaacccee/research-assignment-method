@@ -17,7 +17,7 @@ export class Brain {
       currentFitness?: number;
     }) => void
   ) {
-    this.neat = new Neat(2, 1, undefined, {
+    this.neat = new Neat(52, 1, undefined, {
       mutation: methods.mutation.ALL,
       elitism: 0.1,
       equal: true,

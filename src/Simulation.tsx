@@ -22,6 +22,7 @@ import {
   Typography,
   useTheme,
 } from "@material-ui/core";
+import download from "downloadjs";
 
 const codes = entries(dataset.posts)
   .filter(([_, posts]) => !every(posts.day, (p) => !p.posts.length))
@@ -233,11 +234,12 @@ export default function Simulation() {
                 if (brainRef.current) {
                   const brain = brainRef.current;
                   if (brain.fittest.model) {
-                    prompt(
-                      `Here's the fittest genome with a score of ${brain.fittest.score.toFixed(
-                        2
-                      )}:`,
-                      JSON.stringify((brain?.fittest?.model as any).toJSON())
+                    download(
+                      new Blob([
+                        JSON.stringify((brain?.fittest?.model as any).toJSON()),
+                      ]),
+                      "model.json",
+                      "application/json"
                     );
                   }
                 }
