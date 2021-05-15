@@ -16,6 +16,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Link,
   List,
   ListItem,
   ListItemText,
@@ -25,6 +26,7 @@ import {
 import download from "downloadjs";
 
 const codes = entries(dataset.posts)
+  .slice(0, 50)
   .filter(([_, posts]) => !every(posts.day, (p) => !p.posts.length))
   .map(([code]) => code);
 
@@ -75,6 +77,7 @@ export default function Simulation() {
                 posts: dataset.posts[code as keyof typeof dataset["prices"]],
               },
               (investor, company, vision) => {
+                // return random(-1, 1, true);
                 // Encode information into array of 0..1 floats
                 const input: number[] = [
                   // Self info
@@ -144,7 +147,10 @@ export default function Simulation() {
 
       brain.train();
       brainRef.current = brain;
-      return () => (ref.innerHTML = "");
+      return () => {
+        ref.innerHTML = "";
+        brain.stop();
+      };
     }
     return noop;
   }, [ref, setInfo, brainRef, simulatorRef, addLog]);
@@ -157,53 +163,22 @@ export default function Simulation() {
     }
   }, [brainRef, simulatorRef, speed]);
   return (
-    <Box display="flex" height="100vh">
-      <Box
-        flex={1}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        bgcolor={theme.palette.background.default}
-        overflow="auto"
-        height="100vh"
-      >
-        <div ref={(e) => setRef(e)}></div>
-      </Box>
-      <Box bgcolor={theme.palette.background.paper} pl={2} pr={1}>
-        <List>
-          <ListItem>
-            <ListItemText
-              primary={info.generation ?? 0}
-              secondary="Generation"
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              primary={
-                info.fitness ? `${(info.fitness * 100).toFixed(2)}%` : "-"
-              }
-              secondary="Fitness"
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              primary={
-                info.currentFitness
-                  ? `${(info.currentFitness * 100).toFixed(2)}%`
-                  : "-"
-              }
-              secondary="Current Fitness"
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              primary={`${info.currentCompany}.AX` ?? "-"}
-              secondary="Company"
-            />
-          </ListItem>
-        </List>
-      </Box>
-      <Box bgcolor={theme.palette.background.paper} width={300}>
+    <Box display="flex" height="100%">
+      <Box bgcolor={theme.palette.background.paper} width={300} pl={2}>
+        <Box p={2} pt={3}>
+          <Typography display="block" variant="h6" gutterBottom>
+            Train
+          </Typography>
+          <Typography
+            display="block"
+            variant="caption"
+            color="textSecondary"
+            gutterBottom
+          >
+            This page trains an evolutionary neural network to make decisions as
+            an investor. <Link>More</Link>
+          </Typography>
+        </Box>
         <Box p={2}>
           <Typography display="block" variant="overline" gutterBottom>
             Speed
@@ -263,6 +238,51 @@ export default function Simulation() {
             </div>
           ))}
         </Box>
+      </Box>
+      <Box bgcolor={theme.palette.background.paper} pl={2} pr={1} width={160}>
+        <List>
+          <ListItem>
+            <ListItemText
+              primary={info.generation ?? 0}
+              secondary="Generation"
+            />
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              primary={
+                info.fitness ? `${(info.fitness * 100).toFixed(2)}%` : "-"
+              }
+              secondary="Fitness"
+            />
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              primary={
+                info.currentFitness
+                  ? `${(info.currentFitness * 100).toFixed(2)}%`
+                  : "-"
+              }
+              secondary="Current Fitness"
+            />
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              primary={`${info.currentCompany}.AX` ?? "-"}
+              secondary="Company"
+            />
+          </ListItem>
+        </List>
+      </Box>
+      <Box
+        flex={1}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        bgcolor={theme.palette.background.default}
+        overflow="auto"
+        height="100%"
+      >
+        <div ref={(e) => setRef(e)}></div>
       </Box>
     </Box>
   );

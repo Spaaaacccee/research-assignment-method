@@ -79,11 +79,18 @@ export class Brain {
     this.neat.generation++;
   }
 
+  private stopped = false;
+  stop() {
+    this.stopped = true;
+  }
+
   async train() {
     for (let i = 0; i < 100; i += 1) {
-      await this.startEvaluation();
-      this.endEvaluation();
-      this.evolve();
+      if (!this.stopped) {
+        await this.startEvaluation();
+        this.endEvaluation();
+        this.evolve();
+      }
     }
   }
 
