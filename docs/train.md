@@ -1,8 +1,8 @@
-![train.png](./train.png)
+<img src="./train.png" style="border: 1px solid #E1E4E8;"/>
 
 # Train
 
-This page trains an evolutionary neural network to make decisions as an investor with stock prices from 50 of the top ASX companies from 2021-05-05 to 2021-05-13, along with up to 100 Twitter posts for each.
+This page trains an evolutionary neural network to make decisions as an investor with stock prices from 50 of the top ASX companies (those with names starting with the first half of the alphabet) from 5th of May 2021 to 13th of May 2021, along with up to 100 Twitter posts for each.
 
 [See the dataset](https://raw.githubusercontent.com/Spaaaacccee/research-assignment-method-data/master/dataset.json)
 
@@ -12,7 +12,7 @@ Investors are granted vision (shown by the edges of graph) as well as memory. A 
 
 Investors also make posts, with their sentiment indicated by a happy/sad emoji. Each investor also has a visibility attribute, which is a measure of their influence. A higher visibility indicates a higher chance its node will be connected to other nodes.
 
-Each trial involves one company and 30 investors. Over three days, investors will be allowed to buy, hold, or sell stocks. The value of the stock at the end of particular day will be determined by the net decision made by the population. A trial is considered successful if it correctly predicts whether the stock increases or decreases in value (no attempts to judge magnitude).
+Each trial involves one company and 30 investors. Over four days, investors will be allowed to buy, hold, or sell stocks. The value of the stock at the end of particular day will be determined by the net decision made by the population. A trial is considered successful if it correctly predicts whether the stock increases or decreases in value (no attempts to judge magnitude).
 
 ## Neural Network Format
 
@@ -24,3 +24,5 @@ The input to a model is the investor's vision encoded into an array of 42 floati
 - Investor's current investments
 - The change in company's value over the last 10 days (10 spaces)
 - Favourite count, retweet count, and text sentiment of the 10 most recent visible posts (3 spaces each, total of 30 spaces)
+
+The model outputs a number ranging from 0 to 1, with a value below 0.5 indicating sell and above 0.5 indicating buy.
