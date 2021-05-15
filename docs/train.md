@@ -4,6 +4,8 @@
 
 This page trains an evolutionary neural network to make decisions as an investor with stock prices from 50 of the top ASX companies from 2021-05-05 to 2021-05-13, along with up to 100 Twitter posts for each.
 
+[See the dataset](https://raw.githubusercontent.com/Spaaaacccee/research-assignment-method-data/master/dataset.json)
+
 ## Simulation Format
 
 Investors are granted vision (shown by the edges of graph) as well as memory. A green node indicates they have decided to buy, and a red node indicates they have decided to sell. The size of the node indicates their current wealth. All investors can see the current stock price.
