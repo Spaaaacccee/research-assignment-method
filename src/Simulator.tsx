@@ -80,7 +80,8 @@ export const HISTORY_STEPS = 10;
 const INVESTOR_COUNT = 30;
 const VISION_RADIUS = 0.2;
 
-const SCALE = 2.25;
+const SCALE = window.devicePixelRatio;
+
 export class Simulator {
   steps: number = 6;
   currentStep: number = 2;
