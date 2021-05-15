@@ -1,17 +1,8 @@
 import React, { useEffect, useReducer, useRef, useState } from "react";
-import {
-  entries,
-  every,
-  flatMap,
-  keys,
-  mean,
-  noop,
-  random,
-  round,
-} from "lodash";
+import { entries, every, keys, mean, noop, random, round } from "lodash";
 import dataset from "method-data/dataset.json";
 import { Brain } from "./Brain";
-import { Simulator, MAX_COUNT, pad, HISTORY_STEPS, sign } from "./Simulator";
+import { Simulator } from "./Simulator";
 import {
   Box,
   Button,
@@ -24,6 +15,7 @@ import {
   useTheme,
 } from "@material-ui/core";
 import download from "downloadjs";
+import { createInputArray } from "./createInputArray";
 
 const TRAIN_DOCS_URL =
   "https://github.com/Spaaaacccee/research-assignment-method/blob/master/docs/train.md";
@@ -37,7 +29,7 @@ function randItem<T>(items: T[]) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-function lastFew<T>(arr: T[], n: number) {
+export function lastFew<T>(arr: T[], n: number) {
   return arr.slice(Math.max(arr.length - n, 0));
 }
 
@@ -55,7 +47,7 @@ export default function Simulation() {
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
   const [info, setInfo] = useReducer(
     (prev: SimulationInfo, next: SimulationInfo) => ({ ...prev, ...next }),
-    { fitness: 0, generation: 0 }
+    { fitness: 0, generation: undefined }
   );
   const [speed, setSpeed] = useState(0);
   const [log, addLog] = useReducer(
@@ -82,34 +74,11 @@ export default function Simulation() {
               (investor, company, vision) => {
                 // return random(-1, 1, true);
                 // Encode information into array of 0..1 floats
-                const input: number[] = [
-                  // Self info
-                  investor.cookies / MAX_COUNT,
-                  investor.cookiesInvested / MAX_COUNT,
-                  // Company info
-                  ...pad(
-                    company.values.map((c) => (c?.change ?? 0 + 1) * 0.5),
-                    HISTORY_STEPS
-                  ),
-                  // Vision info
-                  ...pad(
-                    flatMap(lastFew(vision.investors, 3), (i) => [
-                      ...pad(
-                        i.posts.map((p) => p.favoriteCount / MAX_COUNT),
-                        HISTORY_STEPS
-                      ),
-                      ...pad(
-                        i.posts.map((p) => p.retweetCount / MAX_COUNT),
-                        HISTORY_STEPS
-                      ),
-                      ...pad(
-                        i.posts.map((p) => sign(p.textSentiment) / MAX_COUNT),
-                        HISTORY_STEPS
-                      ),
-                    ]),
-                    HISTORY_STEPS * 3
-                  ),
-                ];
+                const input: number[] = createInputArray(
+                  investor,
+                  company,
+                  vision
+                );
                 // Returns 0..1
                 const out = mutator(input);
                 // Remap to -1..1
@@ -167,7 +136,12 @@ export default function Simulation() {
   }, [brainRef, simulatorRef, speed]);
   return (
     <Box display="flex" height="100%">
-      <Box bgcolor={theme.palette.background.paper} width={300} pl={2}>
+      <Box
+        bgcolor={theme.palette.background.paper}
+        width={300}
+        pl={2}
+        overflow="auto"
+      >
         <Box p={2} pt={3}>
           <Typography display="block" variant="h6" gutterBottom>
             Train
@@ -179,7 +153,8 @@ export default function Simulation() {
             gutterBottom
           >
             This page trains an evolutionary neural network to make decisions as
-            an investor{" "}
+            an investor.
+            <br />
             <Link href={TRAIN_DOCS_URL} target="_blank" rel="noopener">
               More
             </Link>
@@ -249,7 +224,7 @@ export default function Simulation() {
         <List>
           <ListItem>
             <ListItemText
-              primary={info.generation ?? 0}
+              primary={info.generation !== undefined ? info.generation : "-"}
               secondary="Generation"
             />
           </ListItem>

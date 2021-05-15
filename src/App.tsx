@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import { useState } from "react";
 import "./App.css";
+import Inspector from "./Inspector";
 import Simulation from "./Simulation";
 
 function App() {
@@ -16,7 +17,11 @@ function App() {
   return (
     <CssBaseline>
       <Box height="100vh" display="flex">
-        <Box bgcolor={theme.palette.background.paper} pt={3}>
+        <Box
+          bgcolor={theme.palette.background.paper}
+          pt={2}
+          borderRight={`1px solid ${theme.palette.divider}`}
+        >
           <Tabs
             value={tab}
             indicatorColor="primary"
@@ -28,7 +33,10 @@ function App() {
             <Tab label="Inspect" value="inspect" />
           </Tabs>
         </Box>
-        <Box flex={1}>{tab === "train" && <Simulation />}</Box>
+        <Box flex={1}>
+          {tab === "train" && <Simulation />}
+          {tab === "inspect" && <Inspector />}
+        </Box>
       </Box>
     </CssBaseline>
   );

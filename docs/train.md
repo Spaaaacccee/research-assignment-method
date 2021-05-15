@@ -17,3 +17,10 @@ Each trial involves one company and 30 investors. Over three days, investors wil
 ## Neural Network Format
 
 By default, each model will be tested against 10 randomly chosen datasets over three days. The fitness of a model is judged by how many trials are successful. Every generation consists of 50 genomes, the top 10% are crossed over and mutated to form the next generation.
+
+The input to a model is the investor's vision encoded into an array of 42 floating-point numbers that range from 0 to 1. The space is used as follows:
+
+- Investor's current wealth
+- Investor's current investments
+- The change in company's value over the last 10 days (10 spaces)
+- Favourite count, retweet count, and text sentiment of the 10 most recent visible posts (3 spaces each, total of 30 spaces)
