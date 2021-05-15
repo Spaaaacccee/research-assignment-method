@@ -12,7 +12,7 @@ import Simulation from "./Simulation";
 
 function App() {
   const theme = useTheme();
-  const [tab, setTab] = useState("about");
+  const [tab, setTab] = useState("train");
   return (
     <CssBaseline>
       <Box height="100vh" display="flex">
@@ -24,7 +24,6 @@ function App() {
             onChange={(_, v) => setTab(v)}
             orientation="vertical"
           >
-            <Tab label="About" value="about" />
             <Tab label="Train" value="train" />
             <Tab label="Inspect" value="inspect" />
           </Tabs>

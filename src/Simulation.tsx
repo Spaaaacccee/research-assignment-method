@@ -25,6 +25,9 @@ import {
 } from "@material-ui/core";
 import download from "downloadjs";
 
+const TRAIN_DOCS_URL =
+  "https://github.com/Spaaaacccee/research-assignment-method/blob/master/docs/train.md";
+
 const codes = entries(dataset.posts)
   .slice(0, 50)
   .filter(([_, posts]) => !every(posts.day, (p) => !p.posts.length))
@@ -176,7 +179,10 @@ export default function Simulation() {
             gutterBottom
           >
             This page trains an evolutionary neural network to make decisions as
-            an investor. <Link>More</Link>
+            an investor{" "}
+            <Link href={TRAIN_DOCS_URL} target="_blank" rel="noopener">
+              More
+            </Link>
           </Typography>
         </Box>
         <Box p={2}>
