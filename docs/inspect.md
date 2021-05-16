@@ -6,7 +6,7 @@ This page visualises the model generated during the training phase and provides 
 
 [See the dataset](https://raw.githubusercontent.com/Spaaaacccee/research-assignment-method-data/master/dataset.json)
 
-# Model Viewer
+## Model Viewer
 
 The nodes and connections of the network is shown. Hover over nodes or connections to see their biases. Hold and drag the nodes to pan the viewport.
 
